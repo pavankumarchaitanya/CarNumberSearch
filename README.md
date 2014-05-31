@@ -1,8 +1,6 @@
 APRTA
 =====
-
-Vathsalyta Bhupathi
-vathsalya.b@gmail.com
+Pavan Kumar Chaitanya 
 
 Description:
 
