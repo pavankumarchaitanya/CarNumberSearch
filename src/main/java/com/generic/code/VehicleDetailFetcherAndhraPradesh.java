@@ -3,6 +3,7 @@ package com.generic.code;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
@@ -64,47 +65,6 @@ public class VehicleDetailFetcherAndhraPradesh extends VehicleDetailFetcher {
 
 			processHTML(page2.asText(), vehicleObj);
 
-			/*
-			 * 
-			 * vehicleObj.setOwnerName(((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdOwner")).asText());
-			 * vehicleObj.setChasisNo
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdChassisno")).asText());
-			 * vehicleObj.setRegistrationNumber
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdRegnNo")).asText());
-			 * vehicleObj.setVehicleClass
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdVehClass")).asText());
-			 * vehicleObj.setMfgYear
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdMfgYear")).asText());
-			 * vehicleObj.setEngineNo
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdEngNo")).asText());
-			 * vehicleObj.setPrevRegn
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdPrevRegn")).asText());
-			 * vehicleObj.setFuelType
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdFuelType")).asText());
-			 * vehicleObj.setVehicleColor
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdColor")).asText());
-			 * vehicleObj.setMakersName
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdMkrName")).asText());
-			 * vehicleObj.setMakersClass
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdMkrClass")).asText());
-			 * vehicleObj.setDateofRegistration
-			 * (((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdDOR")).asText());
-			 * vehicleObj.setFinancier(
-			 * ((HtmlTableDataCell)page2.getHtmlElementById
-			 * ("ctl00_OnlineContent_tdFin")).asText());
-			 */
 		} catch (ElementNotFoundException e) {
 
 			vehicleObj = null;
@@ -113,7 +73,7 @@ public class VehicleDetailFetcherAndhraPradesh extends VehicleDetailFetcher {
 			e.printStackTrace();
 		}
 		Gson gson = new Gson();
-		
+
 		System.out.println(gson.toJson(vehicleObj));
 		return vehicleObj;
 
@@ -149,68 +109,43 @@ public class VehicleDetailFetcherAndhraPradesh extends VehicleDetailFetcher {
 				reqList.add(list.get(i));
 			}
 		}
-		//System.out.println(reqList);
-		ArrayList<String> vehicleDetailsList = new ArrayList<String>();
+		// System.out.println(reqList);
+		HashMap<String, String> vehicleDetailsMap = new HashMap<String, String>();
+		// ArrayList<String>vehicleDetailsList = new ArrayList<String>();
 		for (String str : reqList) {
-			/*
-			 * if(str.contains("Registration No")) { String fuelType =
-			 * str.substring(str.indexOf("Fuel Type:"));
-			 * 
-			 * fuelType= fuelType.replace("Fuel Type:", "").trim();
-			 * 
-			 * 
-			 * } if(str.contains("Owner Name:")) { String vehicleColor =
-			 * str.substring(str.indexOf("Vehicle Color:"));
-			 * 
-			 * vehicleColor= vehicleColor.replace("Vehicle Color:", "").trim();
-			 * 
-			 * 
-			 * } if(str.contains("Registration No:")) { String makersName =
-			 * str.substring(str.indexOf("Maker's Name:"));
-			 * 
-			 * makersName= makersName.replace("Fuel Type:", "").trim();
-			 * 
-			 * 
-			 * } if(str.contains("Registration No")) { String fuelType =
-			 * str.substring(str.indexOf("Fuel Type:"));
-			 * 
-			 * fuelType= fuelType.replace("Fuel Type:", "").trim();
-			 * 
-			 * 
-			 * } if(str.contains("Registration No")) { String fuelType =
-			 * str.substring(str.indexOf("Fuel Type:"));
-			 * 
-			 * fuelType= fuelType.replace("Fuel Type:", "").trim();
-			 * 
-			 * 
-			 * }
-			 */
-			String s[] = str.split("\t");
 
-			vehicleDetailsList.add(s[1].replaceAll("(\\r|\\n)", ""));
-			vehicleDetailsList.add(s[3].replaceAll("(\\r|\\n)", ""));
+			String s[] = str.split("\t");
+			vehicleDetailsMap.put(
+					s[0].replaceAll("(\\r|\\n)", "").replaceAll(" ", "")
+							.replaceAll(":", "").replaceAll("'", ""),
+					s[1].replaceAll("(\\r|\\n)", ""));
+			vehicleDetailsMap.put(
+					s[2].replaceAll("(\\r|\\n)", "").replaceAll(" ", "")
+							.replaceAll(":", "").replaceAll("'", ""),
+					s[3].replaceAll("(\\r|\\n)", ""));
+			// vehicleDetailsList.add(s[1].replaceAll("(\\r|\\n)", ""));
+			// vehicleDetailsList.add(s[3].replaceAll("(\\r|\\n)", ""));
 
 		}
-		
-		vehicleObj.setRegistrationNumber(vehicleDetailsList.get(0));
-		vehicleObj.setFuelType(vehicleDetailsList.get(1));
-		vehicleObj.setOwnerName(vehicleDetailsList.get(2));
-		vehicleObj.setVehicleColor(vehicleDetailsList.get(3));
-		vehicleObj.setVehicleClass(vehicleDetailsList.get(4));
-		vehicleObj.setMakersName(vehicleDetailsList.get(5));
-		vehicleObj.setDateofRegistration(vehicleDetailsList.get(9));
-		vehicleObj.setMfgYear(vehicleDetailsList.get(7));
-		vehicleObj.setMakersClass(vehicleDetailsList.get(7));
-		vehicleObj.setEngineNo(vehicleDetailsList.get(9));
-		vehicleObj.setChasisNo(vehicleDetailsList.get(10));
-		vehicleObj.setDateofRegistration(vehicleDetailsList.get(11));
-		vehicleObj.setPrevRegn(vehicleDetailsList.get(12));
-		vehicleObj.setFinancier(vehicleDetailsList.get(11));
-		
-		
-	//	vehicleObj.setVehicleClass(vehicleDetailsList.get(3));
-	//	vehicleObj.setVehicleClass(vehicleDetailsList.get(3));
-	//	vehicleObj.setVehicleClass(vehicleDetailsList.get(3));
+
+		vehicleObj.setRegistrationNumber(vehicleDetailsMap
+				.get("RegistrationNo")); // vehicleObj.setRegistrationNumber(vehicleDetailsList.get(0));
+		vehicleObj.setFuelType(vehicleDetailsMap.get("FuelType")); // vehicleObj.setFuelType(vehicleDetailsList.get(1));
+		vehicleObj.setOwnerName(vehicleDetailsMap.get("OwnerName")); // vehicleObj.setOwnerName(vehicleDetailsList.get(2));
+		vehicleObj.setVehicleColor(vehicleDetailsMap.get("VehicleColor")); // vehicleObj.setVehicleColor(vehicleDetailsList.get(3));
+		vehicleObj.setVehicleClass(vehicleDetailsMap.get("VehicleClass")); // vehicleObj.setVehicleClass(vehicleDetailsList.get(4));
+		vehicleObj.setMakersName(vehicleDetailsMap.get("MakersName")); // vehicleObj.setMakersName(vehicleDetailsList.get(5));
+		vehicleObj.setDateofRegistration(vehicleDetailsMap
+				.get("DateOfRegistration")); // vehicleObj.setDateofRegistration(vehicleDetailsList.get(9));
+		vehicleObj.setMfgYear(vehicleDetailsMap.get("Mfg.Year")); // vehicleObj.setMfgYear(vehicleDetailsList.get(7));
+		// vehicleObj.setMakersClass(vehicleDetailsMap.get("Mfg.Year"));
+		// //vehicleObj.setMakersClass(vehicleDetailsList.get(7));
+		vehicleObj.setEngineNo(vehicleDetailsMap.get("EngineNo")); // vehicleObj.setEngineNo(vehicleDetailsList.get(9));
+		vehicleObj.setChasisNo(vehicleDetailsMap.get("ChassisNo")); // vehicleObj.setChasisNo(vehicleDetailsList.get(10));
+		// vehicleObj.setDateofRegistration(vehicleDetailsMap.get("RegistrationNo"));
+		// //vehicleObj.setDateofRegistration(vehicleDetailsList.get(11));
+		vehicleObj.setPrevRegn(vehicleDetailsMap.get("PrevRegistrationNo")); // vehicleObj.setPrevRegn(vehicleDetailsList.get(12));
+		vehicleObj.setFinancier(vehicleDetailsMap.get("Financier")); // vehicleObj.setFinancier(vehicleDetailsList.get(11));
 
 	}
 
