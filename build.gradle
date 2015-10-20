@@ -1,0 +1,99 @@
+
+
+buildscript {
+    
+    repositories {
+        mavenCentral()
+    }
+    
+    dependencies {
+        classpath 'mysql:mysql-connector-java:5.1.32'  
+        classpath 'net.sourceforge.htmlunit:htmlunit:2.18'
+		classpath 'org.hibernate:hibernate-core:5.0.2.Final'
+		classpath 'com.google.code.gson:gson:2.4'
+		classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.1.7.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-starter-tomcat:1.1.7.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-starter-web:1.1.7.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-starter-data-jpa:1.1.7.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-starter-data-rest:1.1.7.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-starter-security:1.1.7.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-starter-logging:1.1.7.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-starter-actuator:1.1.7.RELEASE'
+  		classpath 'org.springframework:spring-context-support:3.2.8.RELEASE'
+     	classpath 'commons-cli:commons-cli:1.2'
+		classpath "org.flywaydb:flyway-gradle-plugin:3.2.1"
+    }
+
+}
+
+// Application Plugins
+apply plugin: 'spring-boot'
+apply plugin: 'java'
+
+
+
+// Developer Plugins
+apply plugin: 'eclipse'
+
+
+//flyway
+apply plugin: 'flyway'
+
+mainClassName = 'com.generic.code.Application'
+
+
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+jar {
+
+    baseName = rootProject.name
+    version = version
+
+}
+
+repositories {
+
+    mavenLocal()
+    mavenCentral()
+
+}
+
+
+
+dependencies {
+
+    compile (
+ 		'net.sourceforge.htmlunit:htmlunit:2.18',
+		'org.hibernate:hibernate-core:5.0.2.Final',
+		'com.google.code.gson:gson:2.4',
+		'org.springframework.boot:spring-boot-starter-web:1.1.7.RELEASE',
+        'org.springframework.boot:spring-boot-starter-data-jpa:1.1.7.RELEASE',
+        'org.springframework.boot:spring-boot-starter-data-rest:1.1.7.RELEASE',
+        'org.springframework.boot:spring-boot-starter-security:1.1.7.RELEASE',
+        'org.springframework.boot:spring-boot-starter-logging:1.1.7.RELEASE',
+        'org.springframework.boot:spring-boot-starter-actuator:1.1.7.RELEASE',
+        'org.springframework:spring-context-support:3.2.8.RELEASE',
+        'mysql:mysql-connector-java:5.1.32',
+        'commons-cli:commons-cli:1.2'
+        
+    ) 
+    
+   
+    
+    testCompile (
+        'org.springframework.boot:spring-boot-starter-test:1.1.7.RELEASE'
+    )
+
+}
+
+flyway{
+ url = datasourceURL
+ user = datasourceUsername
+ password = datasourcePassword
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}
+
